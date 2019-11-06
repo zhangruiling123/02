@@ -1,7 +1,7 @@
 <!--  -->
 <template>
     <div class="wrap" ref="wrap">
-        <ul v-for="(item) in list" :key="item.id">
+        <ul v-for="(item) in list" :key="item.id" @click="getDetail(item.id)">
           <div class="item">
             <p>
               <span>{{item.title}}</span>
@@ -16,37 +16,39 @@
 
 <script>
 import axios from 'axios'
+import {mapState,mapActions} from 'vuex'
 export default {
   data () {
     return {
         page : 1,
         pageSize : 10,
         type:'',
-        list : []
     }
+  },
+  computed: {
+    ...mapState({
+      list: state=>state.list
+    })
   },
  watch: {
    $route:function(){
      this.type = this.$route.params['type']
-     this.getData()
+     this.page = 1
+     this.getData({type:this.type,page:this.page})
    }
  },
 methods: {
-  async getData() {
-    let data = await axios.get(`/api/list?type=${this.type}&page=${this.page}&pageSize=10`)
-      if(this.page == 1){
-        this.list = data.data;
-      }else{
-        if(data.data.length === 0){
-          alert('拉到底了')
-        }
-        this.list = [...this.list,data.data]
-      }
+  ...mapActions({
+      getData:'getList'
+  }),
+  getDetail(id){
+    this.$router.push(`/detail/${id}`)
+    
   }
 },
 mounted() {
   this.type  = this.$route.params['type']
-  this.getData()
+  this.getData({type:this.type,page:this.page})
   let ele = this.$refs.wrap
   ele.onscroll = async (e)=>{
     if(this.isFetching){
@@ -58,7 +60,7 @@ mounted() {
         if(height+scrollTop>childHeight-20){
           this.isFetching = true;
           this.page++
-          await this.getData()
+          await this.getData({type:this.type,page:this.page})
           this.isFetching = false
         }
   }

@@ -40,3 +40,22 @@ Mock.mock(/\/api\/list/, 'get', function(options){
     console.log('data...', data, type);
     return data[type].slice(pageSize*(page-1), pageSize*page);
 })
+
+Mock.mock(/\/api\/detail/, 'get', function(options){
+    console.log('options...', options);
+    let query = options.url.split('?')[1].split('&'),
+        queryObj = {};
+    query.forEach(item=>{
+        let arr = item.split('=')
+        queryObj[arr[0]] = arr[1];
+    })
+   let {id} =queryObj
+   let info = {}
+   for(let key in data){
+        let index =data[key].findIndex(item=>item.id==id)
+        if(index !== -1){
+            info = data[key][index]
+        }
+   }
+   return info
+})
