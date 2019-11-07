@@ -1,7 +1,10 @@
 import axios from 'axios'
-export let register = params=>{
-    return axios.post('/api/user/register',params)
+export let showDynamic=()=>{
+    return axios.get('/api/dynamic/showDynamic')
 }
-export let login = params=>{
-    return axios.post('/api/user/login',params)
+export let sendWord = params=>{
+    return axios.post('/api/dynamic/sendWord',params)
+}
+export let sendPicWord=params=>{
+    return axios.post('/api/dynamic/sendPicWord',params)
 }

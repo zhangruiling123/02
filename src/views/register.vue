@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import {register} from '@/service/index'
+import {register} from '../service/index'
 export default {
   data () {
     return {
@@ -21,11 +21,6 @@ export default {
     };
   },
 
-  components: {},
-
-  computed: {},
-
-  mounted: {},
 
   methods: {
        btn(){
