@@ -16,17 +16,17 @@ const mutations={
 const actions={
     async reply({commit,state,dispatch},payload){
         console.log('payload...',payload,state.info)
-        let data = {}
+        let data = {};
         if(state.info.type === 'comment'){
             data = await publishComment({
                 dynamicid:state.info.dynamicid,
                 commentContent:payload
             })
         }else{
-            data = await publishReply{{
+            data = await publishReply({
                 toCommentReplyid:state.info.toCommentReplyid,
                 replyContent:payload
-            }}
+            })
         }
         await dispatch('timeline/getTimeline',null,{root:true})
         commit('hideModal')

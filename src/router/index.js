@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Nprogress from 'nprogress';
+import 'nprogress/nprogress.css';
 
+// 一级路由
 import Home from '../views/home/index.vue'
-
-import Timeline from '../views/home/timeline'
-import My from '../views/home/my'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
+import Post from '../views/post.vue'
+
+// 二级路由
+import Timeline from '../views/home/timeline'
+import My from '../views/home/my'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,6 +24,10 @@ const routes = [
   {
     path: '/login', // 登陆页面
     component: Login
+  },
+  {
+    path: '/post',  // 发送朋友圈
+    component: Post
   },
   {
     path: '/register',  // 注册页面
@@ -57,14 +67,14 @@ const routes = [
       component: null
     }]
   },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
 ]
 
 const router = new VueRouter({
@@ -73,4 +83,26 @@ const router = new VueRouter({
   routes
 })
 
+
+// 添加导航守卫
+const whiteList = ['/login', '/register']
+router.beforeEach((to, from, next)=>{
+  Nprogress.start();
+  let isLogin = window.sessionStorage.getItem('isLogin');
+
+  if (!isLogin){
+    if (whiteList.indexOf(to.path) === -1){
+      Nprogress.done();
+      next('/login');
+    }else{
+      next();
+    }
+  }else{
+    next();
+  }
+})
+
+router.afterEach(()=>{
+  Nprogress.done();
+})
 export default router

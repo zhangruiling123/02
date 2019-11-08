@@ -20,7 +20,7 @@
                 <div class="Tfooter">
                     <p class="action">
                         <span>点赞</span>
-                        <span>{{`评论${item.comments.length}`}}</span>
+                        <span @click="reply(item)">{{`评论${item.comments.length}`}}</span>
                     </p>
                 </div>
                 <Reply :reply="item.comments"/>
@@ -32,16 +32,10 @@
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex'
+import {mapState,mapActions, mapMutations} from 'vuex'
 import Reply from '../../components/reply.vue'
 import ReplyModel from '../../components/replyModal.vue'
 export default {
-  data () {
-    return {
-
-    };
-  },
-
   components: {
       Reply,
       ReplyModel
@@ -56,12 +50,26 @@ export default {
   methods: {
       ...mapActions({
           getTimeline:'timeline/getTimeline'
-      })
+      }),
+      ...mapMutations({
+          showModel:'replyModal/showModal'
+      }),
+      reply(value){
+          this.replyInfo ={
+              type:'comment',
+              dynamicid:value.dynamicid,
+              content:'',
+              title:`评论：${value.userName}`
+          },
+          this.showModel({
+              info:this.replyInfo,
+              show:true
+          })
+      }
   },
   created() {
-      (){
           this.getTimeline()
-      }
+      
   },
 }
 

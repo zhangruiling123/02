@@ -1,4 +1,3 @@
-<!--  -->
 <template>
     <div v-if="show" class="wrap" @click="hide">
         <div>
@@ -10,39 +9,39 @@
 </template>
 
 <script>
-import {mapState,mapMutations,mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex';
+
 export default {
-  data () {
-    return {
-        content:''
-    };
-  },
-
-  computed: {
-      ...mapState({
-          title:state=>state.replyModal.info.title,
-          show:state=>state.replyModal.show
-      })
-  },
-
-  methods: {
-      ...mapMutations({
-          hideModal:'relyModal/hideModal'
-      }),
-      ...mapActions({
-          reply:'replyModal/reply'
-      }),
-      hide(e){
-          if(e.target=== e.currentTarget){
-              this.hideModal()
-          }
-      }
-  }
+    data(){
+        return {
+            content: ''
+        }
+    },
+    computed: {
+        ...mapState({
+            title: state=>state.replyModal.info.title,
+            show: state=>state.replyModal.show
+        })
+    },
+    methods:{
+        ...mapMutations({
+            hideModal: 'replyModal/hideModal'
+        }),
+        ...mapActions({
+            reply: 'replyModal/reply'
+        }),
+        hide(e){
+            // 利用事件冒泡，判断触发事件的元素和绑定事件的元素
+            if (e.target === e.currentTarget){
+                this.hideModal();
+            }
+        }
+    }    
 }
-
 </script>
-<style lang='scss' scoped>
- .wrap{
+
+<style lang="scss" scoped>
+    .wrap{
         position: fixed;
         top: 0;
         left: 0;
@@ -64,7 +63,7 @@ export default {
             margin: .3rem 0;
         }
         p{
-            font-size: .8rem;
+            font-size: .6rem;
         }
         input{
             width: 70%;

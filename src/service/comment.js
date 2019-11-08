@@ -5,5 +5,5 @@ export let publishReply = params=>{
 }
 
 export let publishComment = params=>{
-    return axios.post('/api/commentreply/publishcomment')
+    return axios.post('/api/commentreply/publishcomment',params)
 }

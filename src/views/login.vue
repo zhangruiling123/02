@@ -4,9 +4,9 @@
         <div class="header">圈子登录</div>
       <p><input type="text" placeholder="用户名" v-model="userName" @blur="checkUserName"></p> 
        <p><input :type="this.pass" placeholder="登录密码" v-model="userPwd" ><i @click="btn">显</i></p> 
-         <router-link to="/home/timeline" tag="span">
+     
           <button @click="login">登录</button> 
-        </router-link>
+   
         <br>
       <router-link to="/register" tag="span">
           <span>快速注册</span> 
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {login} from '@/service/index'
+import {login} from '../service/index.js'
 export default {
   data () {
     return {
@@ -25,11 +25,6 @@ export default {
     };
   },
 
-  components: {},
-
-  computed: {},
-
-  mounted: {},
 
   methods: {
       btn(){
@@ -39,18 +34,19 @@ export default {
               this.pass='password'
           }
       },
-      async login(){
-          let {userName,userPwd} = this
-          let result = await login({userName,userPwd})
-          console.log('result...',result)
-          if(result&&result.data.code === 1){
-
-          }
-          alert(result.data.msg)
-      },
+       async login(){
+            let {userName, userPwd} = this;
+            let result = await login({userName, userPwd});
+            // console.log('result...', result);
+            if (result && result.data.code === 1){
+                window.sessionStorage.setItem('isLogin', 'true');
+                this.$router.replace('/')
+            }
+            this.$toast(result.data.msg);
+        },
       checkUserName(){
           if(!/\w{3,20}/.test(this.userName))
-          alert('请输入正确的用户名')
+          this.$toast('请输入正确的用户名')
       }
   }
 }
@@ -66,6 +62,7 @@ export default {
         background: #F2F2F2; 
         border: none;
         outline: none;
+        font-size: .3rem;
     }
     p{
         width: 355px;
@@ -79,6 +76,7 @@ export default {
         background: #F76968;
         color: #fff;
         border: none;
+        font-size: .3rem;
     }
     .header{
         height: 61px;

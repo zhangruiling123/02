@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import {register} from '../service/index'
+import {register} from '../service/index.js'
 export default {
   data () {
     return {
@@ -32,8 +32,8 @@ export default {
       },
       async register(){
           let {userName,userPwd} = this
-          let result = await register({userName,userPwd})
-          console.log('result...',result)
+          let result = await register({userName,userPwd});
+        
           if(result&&result.data.code ===0){
               alert(result.data.msg)
           }else{
